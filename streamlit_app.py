@@ -52,7 +52,7 @@ key_words = st.text_area("주요 단어 입력")
 
 if st.button("상황극 대본 생성"):
     script = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
-    st.text_area("상황극 대본", script, height=300)
+    st.markdown("상황극 대본", script, height=300)
 
     if st.button("음성파일 다운로드"):
         audio_file = download_audio(script)
