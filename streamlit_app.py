@@ -24,7 +24,14 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
         messages=[
             {"role": "system",
              "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students learn key expressions in a fun way."},
-            {"role": "user", "content": f"Create a role-play script for grade {grade} Korean elementary school students. The script should play for {duration} seconds. Include {num_people} balanced roles in the script. Key phrases: {key_phrases}. Key words: {key_words}. The format of the script is 'name:line' and provide 'name: Korean translation' in the next line. Leave one blank line between lines."}
+            {"role": "user", "content": f'''Create a role-play script for grade {grade} Korean elementary school students. The script should play for {duration} seconds. Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line' and provide 'name: Korean translation' in the next line. Leave one blank line between lines.
+            #script example
+            
+            jake: Hi, nice to see you.
+            (안녕, 만나서 반가워.)
+            
+            jane: Hi. Watch out!
+            (안녕. 조심해!)'''}
         ]
     )
 
