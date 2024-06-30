@@ -3,6 +3,7 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 from gtts import gTTS
+import re
 
 # .env 파일 로드
 load_dotenv()
@@ -29,8 +30,14 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
     script = response['choices'][0]['message']['content']
     return script
 
+def remove_korean_translation(script):
+    # 한국어 번역을 제거하는 정규 표현식
+    script_without_korean = re.sub(r'\n\n.*:.*', '', script)
+    return script_without_korean
+
 def download_audio(script):
-    tts = gTTS(script, lang='en')
+    script_without_korean = remove_korean_translation(script)
+    tts = gTTS(script_without_korean, lang='ko')
     audio_file_path = "script_audio.mp3"
     tts.save(audio_file_path)
     return audio_file_path
@@ -59,7 +66,7 @@ if st.button("상황극 대본 생성"):
     st.markdown(f"### 상황극 대본\n\n{st.session_state['script']}")
 
 if st.session_state['script']:
-    if st.button("음성파일 다운로드"):
+    if st.button("음성파일 생성"):
         audio_file = download_audio(st.session_state['script'])
         with open(audio_file, "rb") as file:
             st.download_button(label="Download audio", data=file, file_name="script_audio.mp3", mime="audio/mp3")
