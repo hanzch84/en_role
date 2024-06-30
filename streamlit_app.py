@@ -45,9 +45,9 @@ def download_script(script):
 st.title("초등 영어 상황극 대본 생성기")
 col1, col2, col3 = st.columns(3)
 
-grade = col1.selectbox("학년", ["1", "2", "3", "4", "5", "6"])
+grade = col1.selectbox("학년", ["1", "2", "3", "4", "5", "6"], index=5) 
 num_people = col2.slider("상황극 인원", min_value=2, max_value=10, value=4)
-duration = col3.slider("길이(초)", min_value=30, max_value=300, value=30)
+duration = col3.slider("길이(초)", min_value=10, max_value=300, value=30)
 key_phrases = st.text_input("주요 표현 입력")
 key_words = st.text_area("주요 단어 입력")
 
