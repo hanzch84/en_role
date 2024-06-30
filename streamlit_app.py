@@ -80,31 +80,37 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             [네, 가요!]
             
             ---
-            make script like an example avobe. start_marker = "---" end_marker = "---". you must include it.
+            make script like an example above. start_marker = "---". you must include it.
             '''}
         ]
     )
 
     script = response['choices'][0]['message']['content']
+    
+    if not script:
+        raise ValueError("Generated script is empty")
+    
     return script
 
 def remove_korean_translation(script):
-    # Extract lines between '---'
+    # Extract lines after '---'
     start_marker = "---"
-    end_marker = "---"
     
-    # Find the start and end positions of the markers
+    # Find the start position of the marker
     start_pos = script.find(start_marker) + len(start_marker)
-    end_pos = script.find(end_marker, start_pos)
     
-    # Extract the lines between the markers
-    script_lines = script[start_pos:end_pos].strip().split("\n")
+    # Extract the lines after the marker
+    script_lines = script[start_pos:].strip().split("\n")
     
     # Remove the lines with Korean translations and character names
     english_lines = [line.split(":")[1].split("[")[0].strip() for line in script_lines if ":" in line and "[" in line]
     
     # Join the English lines into the final script
-    final_script = "\n".join(english_lines)
+    final_script = "\n".join(english_lines).strip()
+    
+    if not final_script:
+        raise ValueError("Final script after removing Korean translation is empty")
+    
     return final_script
 
 def download_audio(script):
@@ -134,14 +140,20 @@ if 'script' not in st.session_state:
     st.session_state['script'] = ""
 
 if st.button("상황극 대본 생성"):
-    st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
-    st.markdown(f"### 상황극 대본\n\n{st.session_state['script']}")
+    try:
+        st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
+        st.markdown(f"### 상황극 대본\n\n{st.session_state['script']}")
+    except ValueError as e:
+        st.error(str(e))
 
 if st.session_state['script']:
     if st.button("음성파일 생성"):
-        audio_file = download_audio(st.session_state['script'])
-        with open(audio_file, "rb") as file:
-            st.download_button(label="Download audio", data=file, file_name="script_audio.mp3", mime="audio/mp3")
+        try:
+            audio_file = download_audio(st.session_state['script'])
+            with open(audio_file, "rb") as file:
+                st.download_button(label="Download audio", data=file, file_name="script_audio.mp3", mime="audio/mp3")
+        except ValueError as e:
+            st.error(str(e))
 
     if st.button("대본 다운로드"):
         script_file = download_script(st.session_state['script'])
