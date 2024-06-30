@@ -79,7 +79,9 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             Jin: Yes, let's go!
             [네, 가요!]
             
-            ---'''}
+            ---
+            make script like an example avobe. start_marker = "---" end_marker = "---". you must include it.
+            '''}
         ]
     )
 
