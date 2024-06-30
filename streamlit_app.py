@@ -140,11 +140,12 @@ if 'script' not in st.session_state:
     st.session_state['script'] = ""
 
 if st.button("상황극 대본 생성"):
-    try:
-        st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
-        st.markdown(f"### 상황극 대본\n\n{st.session_state['script']}")
-    except ValueError as e:
-        st.error(str(e))
+    with st.spinner("Generating script..."):
+        try:
+            st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
+            st.markdown(f"### 상황극 대본\n\n{st.session_state['script']}")
+        except ValueError as e:
+            st.error(str(e))
 
 if st.session_state['script']:
     if st.button("음성파일 생성"):
