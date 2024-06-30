@@ -36,6 +36,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             Elementary school students are getting ready for a field trip to the museum. They are discussing what they want to see and are excited about the trip. [초등학교 학생들이 박물관으로 소풍을 가기 위해 준비하고 있습니다. 아이들은 무엇을 보고 싶은지 이야기하며 소풍을 기대하고 있습니다.]
             
             ---
+            scripts:
             
             Sumi: Hello, everyone! How are you today?
             [안녕하세요, 여러분! 오늘 기분이 어떠세요?]
@@ -80,7 +81,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             [네, 가요!]
             
             ---
-            make script like an example above. start_marker = "---". you must include it.
+            make script like an example above. start_marker = "scripts:". you must include it.
             '''}
         ]
     )
@@ -93,8 +94,8 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
     return script
 
 def remove_korean_translation(script):
-    # Extract lines after '---'
-    start_marker = "---"
+    # Extract lines after 'scripts:'
+    start_marker = "scripts:"
     
     # Find the start position of the marker
     start_pos = script.find(start_marker) + len(start_marker)
