@@ -4,6 +4,7 @@ import streamlit as st
 from dotenv import load_dotenv
 from gtts import gTTS
 import re
+import pyperclip
 
 # .env 파일 로드
 load_dotenv()
@@ -75,3 +76,7 @@ if st.session_state['script']:
         script_file = download_script(st.session_state['script'])
         with open(script_file, "rb") as file:
             st.download_button(label="Download script", data=file, file_name="script.txt", mime="text/plain")
+
+    if st.button("스크립트 복사"):
+        pyperclip.copy(st.session_state['script'])
+        st.success("스크립트가 클립보드에 복사되었습니다.")
