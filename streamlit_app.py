@@ -42,7 +42,7 @@ def download_script(script):
     return script_file_path
 
 # Streamlit UI 구성
-st.title("상황극 대본 생성기")
+st.title("초등 영어 상황극 대본 생성기")
 col1, col2, col3 = st.columns(3)
 
 grade = col1.selectbox("학년", ["1", "2", "3", "4", "5", "6"])
