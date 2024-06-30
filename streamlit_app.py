@@ -43,12 +43,16 @@ def download_script(script):
 
 # Streamlit UI 구성
 st.title("상황극 대본 생성기")
+col1, col2, col3 = st.columns(3)
 
-grade = st.selectbox("학년", ["1", "2", "3", "4", "5", "6"])
-num_people = st.slider("상황극 인원", min_value=2, max_value=10, value=4)
-duration = st.slider("길이(초)", min_value=30, max_value=300, value=30)
+grade = col1.selectbox("학년", ["1", "2", "3", "4", "5", "6"])
+num_people = col2.slider("상황극 인원", min_value=2, max_value=10, value=4)
+duration = col3.slider("길이(초)", min_value=30, max_value=300, value=30)
 key_phrases = st.text_input("주요 표현 입력")
 key_words = st.text_area("주요 단어 입력")
+
+
+
 
 if st.button("상황극 대본 생성"):
     script = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
