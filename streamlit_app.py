@@ -37,6 +37,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             Elementary school students are getting ready for a field trip to the museum. They are discussing what they want to see and are excited about the trip. [초등학교 학생들이 박물관으로 소풍을 가기 위해 준비하고 있습니다. 아이들은 무엇을 보고 싶은지 이야기하며 소풍을 기대하고 있습니다.]
             
             ---
+            scripts:
             
             Sumi: Hello, everyone! How are you today?
             [안녕하세요, 여러분! 오늘 기분이 어떠세요?]
@@ -55,33 +56,10 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             
             Jin: Me too! Dinosaurs are so cool.
             [저도요! 공룡은 정말 멋져요.]
-            
-            Minho: I want to see the ancient artifacts. They have stories.
-            [저는 고대 유물을 보고 싶어요. 그들은 이야기가 있어요.]
-            
-            Hana: Don’t forget to bring your notebooks. We need to write about what we see.
-            [노트북 가져오는 것 잊지 마세요. 우리가 본 것에 대해 써야 해요.]
-            
-            Sumi: I have my notebook and a pen ready!
-            [저는 노트북과 펜을 준비했어요!]
-            
-            Jin: Let’s go to the bus. We don’t want to be late.
-            [버스로 가요. 늦지 않도록 해요.]
-            
-            Minho: Yes, let’s go! I can’t wait to explore.
-            [네, 가요! 빨리 탐험하고 싶어요.]
-            
-            Hana: Remember to stay with the group and listen to the teacher.
-            [그룹과 함께 다니고 선생님 말씀 잘 들어요.]
-            
-            Sumi: Okay, let's have fun and learn a lot!
-            [네, 재미있게 놀고 많이 배워요!]
-            
-            Jin: Yes, let's go!
-            [네, 가요!]
+        
             
             ---
-            make script like an example above. start_marker = "---". you must include it.
+            make script like an example above. start_marker = "scripts:". you must include it.
             '''}
         ]
     )
