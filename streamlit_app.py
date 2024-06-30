@@ -98,13 +98,26 @@ def remove_korean_translation(script):
     start_marker = "scripts:"
     
     # Find the start position of the marker
-    start_pos = script.find(start_marker) + len(start_marker)
+    start_pos = script.find(start_marker)
+    
+    # Check if the start_marker exists in the script
+    if start_pos == -1:
+        raise ValueError("The marker 'scripts:' not found in the script")
+
+    start_pos += len(start_marker)
     
     # Extract the lines after the marker
     script_lines = script[start_pos:].strip().split("\n")
     
     # Remove the lines with Korean translations and character names
-    english_lines = [line.split(":")[1].split("[")[0].strip() for line in script_lines if ":" in line and "[" in line]
+    english_lines = []
+    for line in script_lines:
+        if ":" in line and "[" in line:
+            parts = line.split(":")
+            if len(parts) > 1:
+                english_line = parts[1].split("[")[0].strip()
+                if english_line:  # Ensure the line is not empty
+                    english_lines.append(english_line)
     
     # Join the English lines into the final script
     final_script = "\n".join(english_lines).strip()
@@ -113,6 +126,7 @@ def remove_korean_translation(script):
         raise ValueError("Final script after removing Korean translation is empty")
     
     return final_script
+
 
 def download_audio(script):
     script_without_korean = remove_korean_translation(script)
