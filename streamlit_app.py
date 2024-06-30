@@ -25,13 +25,61 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
             {"role": "system",
              "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students learn key expressions in a fun way."},
             {"role": "user", "content": f'''Create a role-play script for grade {grade} Korean elementary school students. The script should play for {duration} seconds. Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line' and provide 'name: Korean translation' in the next line. Leave one blank line between lines. return scripts only.
-            
             #script example
-            jake: Hi, nice to see you.
-            (안녕, 만나서 반가워.)
+            Characters:
+            1. Sumi: An active and curious student. [활발하고 호기심이 많은 학생]
+            2. Jin: A calm and inquisitive student. [차분하고 질문을 잘하는 학생]
+            3. Minho: A student interested in history. [역사에 관심이 많은 학생]
+            4. Hana: A responsible student who takes care of her friends. [책임감 있고 친구들을 잘 챙기는 학생]
             
-            jane: Hi. Watch out!
-            (안녕. 조심해!)'''}
+            Background:
+            Elementary school students are getting ready for a field trip to the museum. They are discussing what they want to see and are excited about the trip. [초등학교 학생들이 박물관으로 소풍을 가기 위해 준비하고 있습니다. 아이들은 무엇을 보고 싶은지 이야기하며 소풍을 기대하고 있습니다.]
+            
+            ---
+            
+            Sumi: Hello, everyone! How are you today?
+            [안녕하세요, 여러분! 오늘 기분이 어떠세요?]
+            
+            Jin: I am good, thank you. How about you, Sumi?
+            [저는 좋아요, 감사합니다. 수미는요?]
+            
+            Minho: I am excited! We have a field trip today.
+            [저는 신나요! 오늘 소풍 가잖아요.]
+            
+            Hana: Yes, we are going to the museum. What do you want to see first?
+            [맞아요, 우리 박물관에 가잖아요. 뭐부터 보고 싶어요?]
+            
+            Sumi: I want to see the dinosaur bones!
+            [저는 공룡 뼈를 보고 싶어요!]
+            
+            Jin: Me too! Dinosaurs are so cool.
+            [저도요! 공룡은 정말 멋져요.]
+            
+            Minho: I want to see the ancient artifacts. They have stories.
+            [저는 고대 유물을 보고 싶어요. 그들은 이야기가 있어요.]
+            
+            Hana: Don’t forget to bring your notebooks. We need to write about what we see.
+            [노트북 가져오는 것 잊지 마세요. 우리가 본 것에 대해 써야 해요.]
+            
+            Sumi: I have my notebook and a pen ready!
+            [저는 노트북과 펜을 준비했어요!]
+            
+            Jin: Let’s go to the bus. We don’t want to be late.
+            [버스로 가요. 늦지 않도록 해요.]
+            
+            Minho: Yes, let’s go! I can’t wait to explore.
+            [네, 가요! 빨리 탐험하고 싶어요.]
+            
+            Hana: Remember to stay with the group and listen to the teacher.
+            [그룹과 함께 다니고 선생님 말씀 잘 들어요.]
+            
+            Sumi: Okay, let's have fun and learn a lot!
+            [네, 재미있게 놀고 많이 배워요!]
+            
+            Jin: Yes, let's go!
+            [네, 가요!]
+            
+            ---'''
         ]
     )
 
@@ -39,9 +87,23 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
     return script
 
 def remove_korean_translation(script):
-    # 한국어 번역을 제거하는 정규 표현식
-    script_without_korean = re.sub(r'\n\n.*:.*', '', script)
-    return script_without_korean
+    # Extract lines between '---'
+    start_marker = "---"
+    end_marker = "---"
+    
+    # Find the start and end positions of the markers
+    start_pos = script.find(start_marker) + len(start_marker)
+    end_pos = script.find(end_marker, start_pos)
+    
+    # Extract the lines between the markers
+    script_lines = script[start_pos:end_pos].strip().split("\n")
+    
+    # Remove the lines with Korean translations and character names
+    english_lines = [line.split(":")[1].split("[")[0].strip() for line in script_lines if ":" in line and "[" in line]
+    
+    # Join the English lines into the final script
+    final_script = "\n".join(english_lines)
+    return final_script
 
 def download_audio(script):
     script_without_korean = remove_korean_translation(script)
