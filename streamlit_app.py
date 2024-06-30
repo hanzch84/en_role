@@ -30,7 +30,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
     return script
 
 def download_audio(script):
-    tts = gTTS(script, lang='ko')
+    tts = gTTS(script, lang='en')
     audio_file_path = "script_audio.mp3"
     tts.save(audio_file_path)
     return audio_file_path
