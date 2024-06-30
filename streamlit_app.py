@@ -37,7 +37,7 @@ def remove_korean_translation(script):
 
 def download_audio(script):
     script_without_korean = remove_korean_translation(script)
-    tts = gTTS(script_without_korean, lang='ko')
+    tts = gTTS(script_without_korean, lang='en')
     audio_file_path = "script_audio.mp3"
     tts.save(audio_file_path)
     return audio_file_path
