@@ -194,6 +194,11 @@ if col1.button("상황극 대본 생성"):
                 </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
         st.session_state['translated'] = translate_script(st.session_state['script'])
+        content = st.session_state['script']
+        trans = st.session_state['translated']    
+        script_placeholder = st.code(content,"http")
+        translate_placeholder = st.code(trans,"http")
+            
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
         overlay_container.empty()
         
