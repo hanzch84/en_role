@@ -12,29 +12,13 @@ css = '''
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        display: none;
-    }
-    .spinner {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1001;
-        display: none;
-    }
 </style>
 '''
 
 # 스타일 적용 및 코드 출력
 st.markdown(css, unsafe_allow_html=True)
+
+
 
 # .env 파일 로드
 load_dotenv()
@@ -51,35 +35,39 @@ openai.api_key = api_key
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
         model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
-            {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
-            #script example (make a script like this example's format. Same format, different content.)
-            [Characters]
-            1. Sumi: An active and curious student.
-            2. Jin: A calm and inquisitive student.
-            3. Minho: A student interested in history.
-            4. Hana: A responsible student who takes care of her friends.
-            
-            [Backgrounds]
-            When: Monday morning, right before the field trip.
-            Where: In the classroom and on the school bus.
-            Scene: Elementary school students are getting ready for a field trip to the museum.
-            They are discussing what they want to see and are excited about the trip.
-            
-            [script]
-            Sumi: Hello, everyone! How are you today?    
-            Jin: I'm good, thank you. How about you, Sumi?        
-            Minho: I'm excited! We have a field trip today.        
-            Hana: Yes, we are going to the museum. What do you want to see first?        
-            Sumi: I want to see the dinosaur bones!        
-            Jin: Me too! Dinosaurs are so cool.
-            '''}
-        ]
+    messages=[
+        {"role": "system",
+        "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
+        {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
+        #script example (make a script like this example's format. Same format, different content.)
+        [Characters]
+        1. Sumi: An active and curious student.
+        2. Jin: A calm and inquisitive student.
+        3. Minho: A student interested in history.
+        4. Hana: A responsible student who takes care of her friends.
+        
+        [Backgrounds]
+        When: Monday morning, right before the field trip.
+        Where: In the classroom and on the school bus.
+        Scene: Elementary school students are getting ready for a field trip to the museum.
+        They are discussing what they want to see and are excited about the trip.
+
+        [script]
+        Sumi: Hello, everyone! How are you today?    
+        Jin: I'm good, thank you. How about you, Sumi?        
+        Minho: I'm excited! We have a field trip today.        
+        Hana: Yes, we are going to the museum. What do you want to see first?        
+        Sumi: I want to see the dinosaur bones!        
+        Jin: Me too! Dinosaurs are so cool.
+        '''}
+    ]
+
     )
 
+    # Convert the response to a Python dictionary
     response_dict = response['choices'][0]['message']['content']
     return response_dict
+
 
 def translate_script(script, src='en', dest='ko'):
     translator = Translator()
@@ -96,25 +84,34 @@ def translate_script(script, src='en', dest='ko'):
     
     return '\n'.join(translated_lines)
 
+
 def remove_korean_translation(script):
+    # Extract lines after 'scripts:'
     start_marker = "[script]"
+    
+    # Find the start position of the marker
     start_pos = script.find(start_marker)
     
+    # Check if the start_marker exists in the script
     if start_pos == -1:
         raise ValueError("The marker '[script]' not found in the script")
 
     start_pos += len(start_marker)
+    
+    # Extract the lines after the marker
     script_lines = script[start_pos:].strip().split("\n")
     
+    # Remove the lines with Korean translations and character names
     english_lines = []
     for line in script_lines:
         if ":" in line:
             parts = line.split(":")
             if len(parts) > 1:
                 english_line = parts[1].strip()
-                if english_line:
+                if english_line:  # Ensure the line is not empty
                     english_lines.append(english_line)
     
+    # Join the English lines into the final script
     final_script = "\n".join(english_lines).strip()
     
     if not final_script:
@@ -156,39 +153,22 @@ if 'script' not in st.session_state:
     st.session_state['script'] = ""
 
 if col1.button("상황극 대본 생성"):
-    st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
-    st.markdown('''<script>
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("spinner").style.display = "block";
-    </script>''', unsafe_allow_html=True)
-    with st.spinner("대본을 생성하는 중입니다..."):
-        try:
-            st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
-        except ValueError as e:
-            st.error(str(e))
+    try:
+        st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
+        
+    except ValueError as e:
+        st.error(str(e))
 
 if st.session_state['script']:
     if col2.button("음성 생성"):
-        st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
-        st.markdown('''<script>
-            document.getElementById("overlay").style.display = "block";
-            document.getElementById("spinner").style.display = "block";
-        </script>''', unsafe_allow_html=True)
-        with st.spinner("음성을 생성하는 중입니다..."):
-            try:
-                audio_file = download_audio(st.session_state['script'])
-                with open(audio_file, "rb") as file:
-                    col22.download_button(label="음성 다운로드", data=file, file_name="script_audio.mp3", mime="audio/mp3")
-            except ValueError as e:
-                st.error(str(e))
+        try:
+            audio_file = download_audio(st.session_state['script'])
+            with open(audio_file, "rb") as file:
+                col22.download_button(label="음성 다운로드", data=file, file_name="script_audio.mp3", mime="audio/mp3")
+        except ValueError as e:
+            st.error(str(e))
 
     if col3.button("대본 생성"):
-        st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
-        st.markdown('''<script>
-            document.getElementById("overlay").style.display = "block";
-            document.getElementById("spinner").style.display = "block";
-        </script>''', unsafe_allow_html=True)
-        with st.spinner("대본 파일을 생성하는 중입니다..."):
-            script_file = download_script(st.session_state['script'])
-            with open(script_file, "rb") as file:
-                col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
+        script_file = download_script(st.session_state['script'])
+        with open(script_file, "rb") as file:
+            col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
