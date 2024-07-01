@@ -144,7 +144,7 @@ try:
     content = st.session_state['script']
 except:
     content = "\n"*10
-col1, col2, col22, col3 = st.columns(4)
+col1, col2, col22, col3, col33 = st.columns(5)
 script_placeholder = st.code(content,"http")
 translate_placeholder = st.code(translate_script(content),"http")
 
@@ -170,5 +170,5 @@ if st.session_state['script']:
     if col3.button("대본 다운로드"):
         script_file = download_script(st.session_state['script'])
         with open(script_file, "rb") as file:
-            st.download_button(label="Download script", data=file, file_name="script.txt", mime="text/plain")
+            col33.download_button(label="Download script", data=file, file_name="script.txt", mime="text/plain")
 
