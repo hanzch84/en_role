@@ -34,7 +34,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
         [Backgrounds]
         When: Monday morning, right before the field trip.
         Where: In the classroom and on the school bus.
-        Elementary school students are getting ready for a field trip to the museum.
+        Scene: Elementary school students are getting ready for a field trip to the museum.
         They are discussing what they want to see and are excited about the trip.
 
         [script]
