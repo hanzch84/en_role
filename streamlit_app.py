@@ -133,7 +133,7 @@ def download_script(script):
     return script_file_path
 
 # Streamlit UI 구성
-st.title("초등 영어 상황극 대본 생성기")
+st.title("초등영어 대본 생성기")
 cola, colb, colc = st.columns(3)
 
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
