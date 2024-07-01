@@ -5,6 +5,20 @@ from dotenv import load_dotenv
 from gtts import gTTS
 from googletrans import Translator
 
+# CSS 스타일 정의
+css = '''
+<style>
+    .code-wrap {
+        white-space: pre-wrap; /* 줄 바꿈을 허용 */
+    }
+</style>
+'''
+
+# 스타일 적용 및 코드 출력
+st.markdown(css, unsafe_allow_html=True)
+
+
+
 # .env 파일 로드
 load_dotenv()
 
@@ -118,20 +132,6 @@ def download_script(script):
     return script_file_path
 
 # Streamlit UI 구성
-# CSS 스타일 정의
-css = '''
-<style>
-    .code-wrap {
-        white-space: pre-wrap; /* 줄 바꿈을 허용 */
-    }
-</style>
-'''
-
-# 스타일 적용 및 코드 출력
-st.markdown(css, unsafe_allow_html=True)
-st.markdown(f'<pre class="code-wrap"><code>{code}</code></pre>', unsafe_allow_html=True)
-
-
 st.title("초등 영어 상황극 대본 생성기")
 col1, col2, col3 = st.columns(3)
 
