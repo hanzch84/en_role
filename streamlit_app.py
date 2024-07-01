@@ -50,7 +50,7 @@ openai.api_key = api_key
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
             {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
@@ -156,6 +156,11 @@ if 'script' not in st.session_state:
     st.session_state['script'] = ""
 
 if col1.button("상황극 대본 생성"):
+    st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
+    st.markdown('''<script>
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("spinner").style.display = "block";
+    </script>''', unsafe_allow_html=True)
     with st.spinner("대본을 생성하는 중입니다..."):
         try:
             st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
@@ -164,6 +169,11 @@ if col1.button("상황극 대본 생성"):
 
 if st.session_state['script']:
     if col2.button("음성 생성"):
+        st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
+        st.markdown('''<script>
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("spinner").style.display = "block";
+        </script>''', unsafe_allow_html=True)
         with st.spinner("음성을 생성하는 중입니다..."):
             try:
                 audio_file = download_audio(st.session_state['script'])
@@ -173,23 +183,12 @@ if st.session_state['script']:
                 st.error(str(e))
 
     if col3.button("대본 생성"):
+        st.markdown('<div class="overlay" id="overlay"></div><div class="spinner" id="spinner"><h2>Generating...</h2></div>', unsafe_allow_html=True)
+        st.markdown('''<script>
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("spinner").style.display = "block";
+        </script>''', unsafe_allow_html=True)
         with st.spinner("대본 파일을 생성하는 중입니다..."):
             script_file = download_script(st.session_state['script'])
             with open(script_file, "rb") as file:
                 col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
-                
-# Overlay div and spinner to display during processing
-st.markdown('''
-<div class="overlay"></div>
-<div class="spinner">
-    <h2>Generating...</h2>
-</div>
-<script>
-    document.querySelectorAll("button").forEach(button => {
-        button.addEventListener("click", () => {
-            document.querySelector(".overlay").style.display = "block";
-            document.querySelector(".spinner").style.display = "block";
-        });
-    });
-</script>
-''', unsafe_allow_html=True)
