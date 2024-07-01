@@ -170,7 +170,7 @@ if col1.button("상황극 대본 생성"):
         </style>
         <div class="overlay"><div><div class="spinner">
                     <span class="fa fa-spinner fa-spin fa-3x"></span>
-                </div><div style="color: white;">계산 중...</div></div></div>""", unsafe_allow_html=True)
+                </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
         st.session_state['translated'] = translate_script(st.session_state['script'])
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
