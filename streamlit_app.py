@@ -141,12 +141,7 @@ num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=4)
 duration = colc.slider("길이(초)", min_value=10, max_value=300, value=30)
 key_phrases = st.text_input("주요 표현 입력")
 key_words = st.text_area("주요 단어 입력")
-try:
-    content = st.session_state['script']
-    trans = st.session_state['translated']
-except:
-    content = "\n"*10+"Engish Script"
-    trans = "\n"*10+"한국어 번역"
+
 col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 
 # 스피너를 표시하면서 계산 진행 오버레이와 스피너를 위한 컨테이너 생성
@@ -163,9 +158,16 @@ overlay_container.markdown("""
 <div class="overlay"><div><div class="spinner">
             <span class="fa fa-spinner fa-spin fa-3x"></span>
         </div><div style="color: white;">대본을 출력하는 중...</div></div></div>""", unsafe_allow_html=True)
-
-script_placeholder = st.code(content,"http")
-translate_placeholder = st.code(trans,"http")
+try:
+    content = st.session_state['script']
+    trans = st.session_state['translated']
+    script_placeholder = st.code(content,"http")
+    translate_placeholder = st.code(trans,"http")
+except:
+    content = "\n"*10+"Engish Script"
+    trans = "\n"*10+"한국어 번역"
+    script_placeholder = st.code(content,"http")
+    translate_placeholder = st.code(trans,"http")
 
 # 작업이 완료되면 오버레이와 스피너를 제거합니다.
 overlay_container.empty()
