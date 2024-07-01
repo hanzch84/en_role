@@ -196,8 +196,8 @@ if col1.button("상황극 대본 생성"):
         st.session_state['translated'] = translate_script(st.session_state['script'])
         content = st.session_state['script']
         trans = st.session_state['translated']    
-        script_placeholder = st.code(content,"http")
-        translate_placeholder = st.code(trans,"http")
+        script_placeholder.code(content,"http")
+        translate_placeholder.code(trans,"http")
             
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
         overlay_container.empty()
