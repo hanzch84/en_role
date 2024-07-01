@@ -143,18 +143,38 @@ key_phrases = st.text_input("주요 표현 입력")
 key_words = st.text_area("주요 단어 입력")
 try:
     content = st.session_state['script']
+    trans = st.session_state['translated']
 except:
-    content = "\n"*10
+    content = "\n"*10+"Engish Script"
+    trans = "\n"*10+"한국어 번역"
 col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 script_placeholder = st.code(content,"http")
-translate_placeholder = st.code(translate_script(content),"http")
+translate_placeholder = st.code(trans,"http")
 
 if 'script' not in st.session_state:
     st.session_state['script'] = ""
+    st.session_state['translated'] = ""
 
 if col1.button("상황극 대본 생성"):
     try:
+        # 스피너를 표시하면서 계산 진행 오버레이와 스피너를 위한 컨테이너 생성
+        overlay_container = st.empty()
+        # 오버레이와 스피너 추가
+        overlay_container.markdown("""
+        <style>
+        .overlay {
+            position: fixed;top: 0;left: 0;width: 100%;height: 100%;
+            background: rgba(0, 0, 0, 0.5);z-index: 999;display: flex;
+            justify-content: center;align-items: center;                }
+        .spinner {margin-bottom: 10px;}
+        </style>
+        <div class="overlay"><div><div class="spinner">
+                    <span class="fa fa-spinner fa-spin fa-3x"></span>
+                </div><div style="color: white;">계산 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
+        st.session_state['translated'] = translate_script(st.session_state['script'])
+        # 작업이 완료되면 오버레이와 스피너를 제거합니다.
+        overlay_container.empty()
         
     except ValueError as e:
         st.error(str(e))
