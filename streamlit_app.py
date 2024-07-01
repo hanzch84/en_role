@@ -4,6 +4,7 @@ import streamlit as st
 from dotenv import load_dotenv
 from gtts import gTTS
 from googletrans import Translator
+from datetime import datetime
 
 # CSS 스타일 정의
 css = '''
