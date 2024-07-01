@@ -145,7 +145,7 @@ try:
     content = st.session_state['script']
 except:
     content = "\n"*10
-col1, col2, col22, col3, col33 = st.columns([3,2,2,2,2])
+col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 script_placeholder = st.code(content,"http")
 translate_placeholder = st.code(translate_script(content),"http")
 
