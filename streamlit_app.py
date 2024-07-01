@@ -144,7 +144,7 @@ try:
     content = st.session_state['script']
 except:
     content = "\n"*10
-col1, col2, col3 = st.columns(3)
+col1, col2, col22, col3 = st.columns(4)
 script_placeholder = st.code(content,"http")
 translate_placeholder = st.code(translate_script(content),"http")
 
@@ -163,7 +163,7 @@ if st.session_state['script']:
         try:
             audio_file = download_audio(st.session_state['script'])
             with open(audio_file, "rb") as file:
-                st.download_button(label="Download audio", data=file, file_name="script_audio.mp3", mime="audio/mp3")
+                col22.download_button(label="Download audio", data=file, file_name="script_audio.mp3", mime="audio/mp3")
         except ValueError as e:
             st.error(str(e))
 
