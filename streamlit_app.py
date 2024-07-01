@@ -145,7 +145,7 @@ try:
     content = st.session_state['script']
 except:
     content = "\n"*10
-col1, col2, col3 = st.columns(3)
+col1, col2, col22, col3, col33 = st.columns([3,2,2,2,2])
 script_placeholder = st.code(content,"http")
 translate_placeholder = st.code(translate_script(content),"http")
 
@@ -160,22 +160,15 @@ if col1.button("상황극 대본 생성"):
         st.error(str(e))
 
 if st.session_state['script']:
-    if col2.button("음성파일 생성"):
+    if col2.button("음성 생성"):
         try:
             audio_file = download_audio(st.session_state['script'])
-            current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-            file_name = f"{current_time}_EnRole.mp3"
             with open(audio_file, "rb") as file:
-                col22.download_button(label="Download audio", data=file, file_name=file_name, mime="audio/mp3")
+                col22.download_button(label="음성 다운로드", data=file, file_name="script_audio.mp3", mime="audio/mp3")
         except ValueError as e:
             st.error(str(e))
 
-    if col3.button("대본 다운로드"):
-        try:
-            script_file = download_script(st.session_state['script'])
-            current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-            file_name = f"{current_time}_EnRole.txt"
-            with open(script_file, "rb") as file:
-                col33.download_button(label="Download script", data=file, file_name=file_name, mime="text/plain")
-        except ValueError as e:
-            st.error(str(e))
+    if col3.button("대본 생성"):
+        script_file = download_script(st.session_state['script'])
+        with open(script_file, "rb") as file:
+            col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
