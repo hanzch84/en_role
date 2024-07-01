@@ -156,7 +156,7 @@ overlay_container.markdown("""
 <style>
 .overlay {
     position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-    background: rgba(0, 0, 0, 0.5);z-index: 999;display: flex;
+    background: rgba(0, 0, 0, 0.7);z-index: 999;display: flex;
     justify-content: center;align-items: center;                }
 .spinner {margin-bottom: 10px;}
 </style>
@@ -183,7 +183,7 @@ if col1.button("상황극 대본 생성"):
         <style>
         .overlay {
             position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-            background: rgba(0, 0, 0, 0.5);z-index: 999;display: flex;
+            background: rgba(0, 0, 0, 0.7);z-index: 999;display: flex;
             justify-content: center;align-items: center;                }
         .spinner {margin-bottom: 10px;}
         </style>
