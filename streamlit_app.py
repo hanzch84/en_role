@@ -151,7 +151,7 @@ translate_placeholder = st.code(translate_script(content),"http")
 if 'script' not in st.session_state:
     st.session_state['script'] = ""
 
-if st.button("상황극 대본 생성"):
+if col1.button("상황극 대본 생성"):
     try:
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
         
@@ -159,7 +159,7 @@ if st.button("상황극 대본 생성"):
         st.error(str(e))
 
 if st.session_state['script']:
-    if st.button("음성파일 생성"):
+    if col2.button("음성파일 생성"):
         try:
             audio_file = download_audio(st.session_state['script'])
             with open(audio_file, "rb") as file:
@@ -167,7 +167,7 @@ if st.session_state['script']:
         except ValueError as e:
             st.error(str(e))
 
-    if st.button("대본 다운로드"):
+    if col3.button("대본 다운로드"):
         script_file = download_script(st.session_state['script'])
         with open(script_file, "rb") as file:
             st.download_button(label="Download script", data=file, file_name="script.txt", mime="text/plain")
