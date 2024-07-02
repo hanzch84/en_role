@@ -12,8 +12,15 @@ css = '''
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
-    h1,h3 {
+    h1,h3{
         text-align: center; /* 텍스트를 가운데 정렬 */
+        line-height: 0.6;
+
+    }
+    p {
+        text-align: center; /* 텍스트를 가운데 정렬 */
+        font-size: 12px;
+        line-height: 0.8;
     }
 </style>
 '''
@@ -126,7 +133,7 @@ def remove_extras(script):
                     english_lines.append(english_line)
     
     # Join the English lines into the final script
-    final_script = "\n                .\n".join(english_lines).strip()
+    final_script = "\n".join(english_lines).strip()
     
     if not final_script:
         raise ValueError("Final script after removing Korean translation is empty")
@@ -148,8 +155,9 @@ def download_script(script):
 
 # Streamlit UI 구성
 st.title("영어 대본 생성기")
-st.subheader("English Role-play scripter")
-cola, colb, colc = st.columns(3)
+st.write("EnRole(English Role-play Scripter)")
+st.write("교사 박현수, 버그 및 개선 문의: hanzch84@gmail.com")
+cola, colb, colc = st.columns([2,3,4])
 
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=4)
