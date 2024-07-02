@@ -12,7 +12,7 @@ css = '''
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
-    h1 {
+    h1,h3 {
         text-align: center; /* 텍스트를 가운데 정렬 */
     }
 </style>
@@ -147,7 +147,8 @@ def download_script(script):
     return script_file_path
 
 # Streamlit UI 구성
-st.title("초등영어 대본 생성기")
+st.title("영어 대본 생성기")
+st.subheader("English Role-play scripter")
 cola, colb, colc = st.columns(3)
 
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
