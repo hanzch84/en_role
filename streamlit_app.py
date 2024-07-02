@@ -126,7 +126,7 @@ def remove_extras(script):
                     english_lines.append(english_line)
     
     # Join the English lines into the final script
-    final_script = "\n".join(english_lines).strip()
+    final_script = "\n                .\n".join(english_lines).strip()
     
     if not final_script:
         raise ValueError("Final script after removing Korean translation is empty")
