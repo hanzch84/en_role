@@ -39,6 +39,30 @@ if not api_key:
 
 openai.api_key = api_key
 
+#화면 프리징
+def freezer(message):
+    # 스피너를 표시하면서 계산 진행 오버레이와 스피너를 위한 컨테이너 생성
+    overlay_container = st.empty()
+    # 오버레이와 스피너 추가
+    overlay_container.markdown("""
+        <style>
+            .overlay {
+                position: fixed;top: 0;left: 0;width: 100%;height: 100%;
+                background: rgba(0, 0, 0, 0.7);z-index: 999;display: flex;
+                justify-content: center;align-items: center;                }
+            .spinner {margin-bottom: 10px;} 
+        </style>
+        <div class="overlay"><div><div class="spinner">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div><div style="color: white;">"""+message+"""</div></div></div>""", unsafe_allow_html=True)
+    return
+
+def defreezer():
+    # 작업이 완료되면 오버레이와 스피너를 제거합니다.
+    overlay_container.empty()
+    return
+
+
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
@@ -155,7 +179,7 @@ def download_script(script):
 
 # Streamlit UI 구성
 st.title("영어 대본 생성기")
-st.write("EnRole(English Role-play Scripter)")
+st.subheader("EnRole: English Role-play Scripter")
 st.write("교사 박현수, 버그 및 개선 문의: hanzch84@gmail.com")
 cola, colb, colc = st.columns([2,3,4])
 
@@ -230,14 +254,31 @@ if col1.button("상황극 대본 생성"):
 
 if st.session_state['script']:
     if col2.button("음성 생성"):
+        # 스피너를 표시하면서 계산 진행 오버레이와 스피너를 위한 컨테이너 생성
+        overlay_container = st.empty()
+        # 오버레이와 스피너 추가
+        overlay_container.markdown("""
+            <style>
+                .overlay {
+                    position: fixed;top: 0;left: 0;width: 100%;height: 100%;
+                    background: rgba(0, 0, 0, 0.7);z-index: 999;display: flex;
+                    justify-content: center;align-items: center;                }
+                .spinner {margin-bottom: 10px;} 
+            </style>
+            <div class="overlay"><div><div class="spinner">
+                <span class="fa fa-spinner fa-spin fa-3x"></span>
+            </div><div style="color: white;">"대본을 오디오 파일로 생성 중..."</div></div></div>""", unsafe_allow_html=True)
         try:
             audio_file = download_audio(st.session_state['script'])
             with open(audio_file, "rb") as file:
                 col22.download_button(label="음성 다운로드", data=file, file_name="script_audio.mp3", mime="audio/mp3")
         except ValueError as e:
             st.error(str(e))
+        overlay_container.empty()
+
 
     if col3.button("대본 생성"):
-        script_file = download_script(st.session_state['script'])
+        script_file = download_script(st.session_state['script']+'\n\n\n'+st.session_state['translated'])
         with open(script_file, "rb") as file:
             col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
+

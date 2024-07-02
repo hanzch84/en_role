@@ -1,0 +1,38 @@
+[Characters]  
+1. Jieun: An enthusiastic and friendly student.  
+2. Hyun: A quiet but curious student.  
+3. Dongha: A smart student interested in science.  
+4. Sujin: A helpful student who likes to organize activities.  
+  
+[Backgrounds]  
+When: Tuesday afternoon, during Science class.  
+Where: In the classroom.  
+Scene: The students are discussing their science project and things they need to do.
+
+[script]  
+Jieun: Hi, everyone! How is your science project going?  
+Hyun: It's going well, thank you. How about yours, Jieun?  
+Dongha: I need some more materials. We have to build a volcano.  
+Sujin: Yes, let's start with baking soda and vinegar. They make the best volcano!  
+Jieun: Great idea, Sujin! We can also add red food coloring.  
+Hyun: That sounds amazing! I can't wait to see it erupt.
+
+
+[등장인물]  
+1. 지은: 열정적이고 친절한 학생.  
+2. 현: 조용하지만 호기심 많은 학생.  
+3. 동하: 과학에 관심이 많은 똑똑한 학생.  
+4. 수진: 활동을 조직하는 것을 좋아하는 도움이 되는 학생.  
+
+[배경]  
+언제: 화요일 오후, 과학 시간.  
+어디서: 교실에서.  
+장면: 학생들이 과학 프로젝트와 해야 할 일을 이야기하고 있어요.
+
+[대본]  
+지은: 안녕, 모두! 과학 프로젝트는 어떻게 되고 있어?  
+현: 잘 되고 있어, 고마워. 지은이는 어때?  
+동하: 재료가 조금 더 필요해. 우리는 화산을 만들어야 해.  
+수진: 그래, 베이킹 소다와 식초로 시작하자. 그게 최고야!  
+지은: 좋은 생각이야, 수진! 빨간 식용 색소도 추가할 수 있어.  
+현: 정말 멋질 것 같아! 빨리 화산이 폭발하는 걸 보고 싶어.
