@@ -12,13 +12,14 @@ css = '''
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
+    h1 {
+        text-align: center; /* 텍스트를 가운데 정렬 */
+    }
 </style>
 '''
 
 # 스타일 적용 및 코드 출력
 st.markdown(css, unsafe_allow_html=True)
-
-
 
 # .env 파일 로드
 load_dotenv()
@@ -68,6 +69,19 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
     response_dict = response['choices'][0]['message']['content']
     return response_dict
 
+def translate_gpt(script):
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+    messages=[
+    {"role": "system",
+    "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
+    {"role": "user", "content": f'Please translate the following script to Korean, maintaining the same format and context. Ensure that the translation uses easy words suitable for elementary school students.\n{script}'}
+    ]
+    )
+
+    # Convert the response to a Python dictionary
+    response_dict = response['choices'][0]['message']['content']
+    return response_dict
 
 def translate_script(script, src='en', dest='ko'):
     translator = Translator()
@@ -85,7 +99,7 @@ def translate_script(script, src='en', dest='ko'):
     return '\n'.join(translated_lines)
 
 
-def remove_korean_translation(script):
+def remove_extras(script):
     # Extract lines after 'scripts:'
     start_marker = "[script]"
     
@@ -120,7 +134,7 @@ def remove_korean_translation(script):
     return final_script
 
 def download_audio(script):
-    script_without_korean = remove_korean_translation(script)
+    script_without_korean = remove_extras(script)
     tts = gTTS(script_without_korean, lang='en')
     audio_file_path = "script_audio.mp3"
     tts.save(audio_file_path)
@@ -193,7 +207,7 @@ if col1.button("상황극 대본 생성"):
                     <span class="fa fa-spinner fa-spin fa-3x"></span>
                 </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
-        st.session_state['translated'] = translate_script(st.session_state['script'])
+        st.session_state['translated'] = translate_gpt(st.session_state['script'])
         content = st.session_state['script']
         trans = st.session_state['translated']    
         script_placeholder.code(content,"http")
