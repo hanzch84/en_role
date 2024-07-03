@@ -12,9 +12,15 @@ css = '''
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
-    h1,h3{
+    h1{
         text-align: center; /* 텍스트를 가운데 정렬 */
         line-height: 0.6;
+
+    }
+    h3{
+        text-align: center; /* 텍스트를 가운데 정렬 */
+        line-height: 0.6;
+        font-size: 16px;
 
     }
     p {
