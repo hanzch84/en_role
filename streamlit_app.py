@@ -15,7 +15,6 @@ css = '''
     h1{
         text-align: center; /* 텍스트를 가운데 정렬 */
         line-height: 0.6;
-
     }
     h3{
         text-align: center; /* 텍스트를 가운데 정렬 */
