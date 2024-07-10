@@ -85,7 +85,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
 
 def translate_gpt(script):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
     messages=[
     {"role": "system",
     "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
