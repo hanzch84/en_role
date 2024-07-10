@@ -44,30 +44,6 @@ if not api_key:
 
 openai.api_key = api_key
 
-#화면 프리징
-def freezer(message):
-    # 스피너를 표시하면서 계산 진행 오버레이와 스피너를 위한 컨테이너 생성
-    overlay_container = st.empty()
-    # 오버레이와 스피너 추가
-    overlay_container.markdown("""
-        <style>
-            .overlay {
-                position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-                background: rgba(0, 0, 0, 0.7);z-index: 999;display: flex;
-                justify-content: center;align-items: center;                }
-            .spinner {margin-bottom: 10px;} 
-        </style>
-        <div class="overlay"><div><div class="spinner">
-            <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </div><div style="color: white;">"""+message+"""</div></div></div>""", unsafe_allow_html=True)
-    return
-
-def defreezer():
-    # 작업이 완료되면 오버레이와 스피너를 제거합니다.
-    overlay_container.empty()
-    return
-
-
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
