@@ -120,6 +120,12 @@ def remove_extras(script):
     
     # Check if the start_marker exists in the script
     if start_pos == -1:
+        start_pos = script.find("[Script]")
+    if start_pos == -1:
+        start_pos = script.find("[Scripts]")
+    if start_pos == -1:
+        start_pos = script.find("[scripts]")
+    if start_pos == -1:
         raise ValueError("The marker '[script]' not found in the script")
 
     start_pos += len(start_marker)
