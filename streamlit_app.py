@@ -47,11 +47,13 @@ openai.api_key = api_key
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
     messages=[
         {"role": "system",
         "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
-        {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
+        {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}.
+         The format of the script is 'name:line'. Return scripts only.
+         {"" if situations=="" else "("+situations+") is The setting for the scenario you are creating. Reflect it in the background of the role-play scenario."}
         #script example (make a script like this example's format. Same format, different content.)
         [Characters]
         1. Sumi: An active and curious student.
@@ -174,8 +176,9 @@ grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=3)
 duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30)
 with st.expander("상세 옵션"):
-    key_phrases = st.text_area("주요 표현 입력",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
-    key_words = st.text_input("주요 단어 입력",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표로 구분해서 입력하세요.")
+    situations = st.text_input("간단한 상황 입력",key="situations",placeholder="대략적인 상황극의 상황을 입력해 주세요.")
+    key_phrases = st.text_area("주요 표현 입력",key="expressions",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
+    key_words = st.text_input("주요 단어 입력",key="words",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표로 구분해서 입력하세요.")
 
 col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 
