@@ -20,7 +20,6 @@ css = '''
         text-align: center; /* 텍스트를 가운데 정렬 */
         line-height: 0.6;
         font-size: 16px;
-
     }
     p {
         text-align: center; /* 텍스트를 가운데 정렬 */
@@ -47,34 +46,33 @@ openai.api_key = api_key
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
-        model="gpt-4o",
-    messages=[
-        {"role": "system",
-        "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
-        {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
-        #script example (make a script like this example's format. Same format, different content.)
-        [Characters]
-        1. Sumi: An active and curious student.
-        2. Jin: A calm and inquisitive student.
-        3. Minho: A student interested in history.
-        4. Hana: A responsible student who takes care of her friends.
-        
-        [Backgrounds]
-        When: Monday morning, right before the field trip.
-        Where: In the classroom and on the school bus.
-        Scene: Elementary school students are getting ready for a field trip to the museum.
-        They are discussing what they want to see and are excited about the trip.
+        model="gpt-4",
+        messages=[
+            {"role": "system",
+             "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
+            {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}. The format of the script is 'name:line'. Return scripts only.
+            #script example (make a script like this example's format. Same format, different content.)
+            [Characters]
+            1. Sumi: An active and curious student.
+            2. Jin: A calm and inquisitive student.
+            3. Minho: A student interested in history.
+            4. Hana: A responsible student who takes care of her friends.
+            
+            [Backgrounds]
+            When: Monday morning, right before the field trip.
+            Where: In the classroom and on the school bus.
+            Scene: Elementary school students are getting ready for a field trip to the museum.
+            They are discussing what they want to see and are excited about the trip.
 
-        [script]
-        Sumi: Hello, everyone! How are you today?    
-        Jin: I'm good, thank you. How about you, Sumi?        
-        Minho: I'm excited! We have a field trip today.        
-        Hana: Yes, we are going to the museum. What do you want to see first?        
-        Sumi: I want to see the dinosaur bones!        
-        Jin: Me too! Dinosaurs are so cool.
-        '''}
-    ]
-
+            [script]
+            Sumi: Hello, everyone! How are you today?    
+            Jin: I'm good, thank you. How about you, Sumi?        
+            Minho: I'm excited! We have a field trip today.        
+            Hana: Yes, we are going to the museum. What do you want to see first?        
+            Sumi: I want to see the dinosaur bones!        
+            Jin: Me too! Dinosaurs are so cool.
+            '''}
+        ]
     )
 
     # Convert the response to a Python dictionary
@@ -84,11 +82,11 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
 def translate_gpt(script):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-    messages=[
-    {"role": "system",
-    "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
-    {"role": "user", "content": f'Please translate the following script to Korean, maintaining the same format and context. Ensure that the translation uses easy words suitable for elementary school students.\n{script}'}
-    ]
+        messages=[
+            {"role": "system",
+             "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
+            {"role": "user", "content": f'Please translate the following script to Korean, maintaining the same format and context. Ensure that the translation uses easy words suitable for elementary school students.\n{script}'}
+        ]
     )
 
     # Convert the response to a Python dictionary
@@ -109,7 +107,6 @@ def translate_script(script, src='en', dest='ko'):
             translated_lines.append(line)
     
     return '\n'.join(translated_lines)
-
 
 def remove_extras(script):
     # Extract lines after 'scripts:'
@@ -164,11 +161,14 @@ st.subheader("EnRole: English Role-play Scripter")
 st.write("교사 박현수, 버그 및 개선 문의: hanzch84@gmail.com")
 cola, colb, colc = st.columns([2,3,4])
 
-grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
+grade = cola.selectbox("학년", ["3rd ~ 4th", "5th ~ 6th"], index=1)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=4)
 duration = colc.slider("길이(초)", min_value=10, max_value=300, value=30)
-key_phrases = st.text_input("주요 표현 입력")
-key_words = st.text_area("주요 단어 입력")
+
+# 상세 옵션 추가
+with st.expander("상세 옵션"):
+    key_phrases = st.text_input("주요 표현 입력",placeholder="What's Wrong?, i have a cold. 등의 문장을 쉼표나 엔터키로 구분해서 입력하세요.")
+    key_words = st.text_area("주요 단어 입력", placeholder="cold, fever, medicine, problem 등의 단어 쉼표나 엔터키로 구분해서 입력하세요.")
 
 col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 
@@ -184,8 +184,8 @@ overlay_container.markdown("""
 .spinner {margin-bottom: 10px;}
 </style>
 <div class="overlay"><div><div class="spinner">
-            <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </div><div style="color: white;">대본을 출력하는 중...</div></div></div>""", unsafe_allow_html=True)
+        <span class="fa fa-spinner fa-spin fa-3x"></span>
+    </div><div style="color: white;">대본을 출력하는 중...</div></div></div>""", unsafe_allow_html=True)
 try:
     content = st.session_state['script']
     trans = st.session_state['translated']
@@ -218,15 +218,15 @@ if col1.button("상황극 대본 생성"):
         .spinner {margin-bottom: 10px;}
         </style>
         <div class="overlay"><div><div class="spinner">
-                    <span class="fa fa-spinner fa-spin fa-3x"></span>
-                </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
+                <span class="fa fa-spinner fa-spin fa-3x"></span>
+            </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
         st.session_state['translated'] = translate_gpt(st.session_state['script'])
         content = st.session_state['script']
         trans = st.session_state['translated']    
         script_placeholder.code(content,"http")
         translate_placeholder.code(trans,"http")
-            
+        
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
         overlay_container.empty()
         
@@ -257,9 +257,7 @@ if st.session_state['script']:
             st.error(str(e))
         overlay_container.empty()
 
-
     if col3.button("대본 생성"):
         script_file = download_script(st.session_state['script']+'\n\n\n'+st.session_state['translated'])
         with open(script_file, "rb") as file:
             col33.download_button(label="대본 다운로드", data=file, file_name="script.txt", mime="text/plain")
-
