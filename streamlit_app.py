@@ -175,8 +175,8 @@ cola, colb, colc = st.columns([2,3,4])
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=3)
 duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30)
+situations = st.text_input("간단한 상황 입력(한글 혹은 영어)",key="situations",placeholder="대략적인 상황극의 상황을 한글이나 영어로 입력해 주세요.(예)우주선의 고장으로 조난을 당함.")
 with st.expander("상세 옵션"):
-    situations = st.text_input("간단한 상황 입력(한글 혹은 영어)",key="situations",placeholder="대략적인 상황극의 상황을 한글이나 영어로 입력해 주세요.(예)우주선의 고장으로 조난을 당함.")
     key_words = st.text_input("주요 단어 입력",key="words",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표로 구분해서 입력하세요.")
     key_phrases = st.text_area("주요 표현 입력",key="expressions",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
     

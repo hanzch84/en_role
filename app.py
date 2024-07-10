@@ -47,7 +47,7 @@ openai.api_key = api_key
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words, situations=""):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
             {"role": "system",
              "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
@@ -84,7 +84,7 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
 
 def translate_gpt(script):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
             {"role": "system",
              "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
@@ -97,7 +97,7 @@ def translate_gpt(script):
     return response_dict
 
 def remove_extras(script):
-        # 정규식 패턴 정의
+    # 정규식 패턴 정의
     start_marker_pattern = re.compile(r'\[scripts?\]', re.IGNORECASE)
     
     # 정규식으로 마커 찾기
@@ -162,6 +162,15 @@ col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 if 'script' not in st.session_state:
     st.session_state['script'] = ""
     st.session_state['translated'] = ""
+    st.session_state['script_content'] = ""
+    st.session_state['translate_content'] = ""
+
+# 처음부터 텍스트 박스를 생성
+script_height = max(200, len(st.session_state['script_content'].split('\n')) * 25)
+translate_height = max(200, len(st.session_state['translate_content'].split('\n')) * 25)
+
+st.text_area("Generated Script", value=st.session_state['script_content'], height=script_height, key='script_content')
+st.text_area("Translated Script", value=st.session_state['translate_content'], height=translate_height, key='translate_content')
 
 if col1.button("상황극 대본 생성"):
     try:
@@ -181,15 +190,15 @@ if col1.button("상황극 대본 생성"):
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words, situations)
         st.session_state['translated'] = translate_gpt(st.session_state['script'])
         
-        content = st.session_state['script']
-        trans = st.session_state['translated']    
+        st.session_state['script_content'] = st.session_state['script']
+        st.session_state['translate_content'] = st.session_state['translated']
         
-        # 줄 수에 따라 텍스트 에어리어 높이 설정
-        script_height = max(200, len(content.split('\n')) * 25)
-        translate_height = max(200, len(trans.split('\n')) * 25)
+        # 텍스트 에어리어 업데이트
+        script_height = max(200, len(st.session_state['script_content'].split('\n')) * 25)
+        translate_height = max(200, len(st.session_state['translate_content'].split('\n')) * 25)
         
-        st.text_area("Generated Script", value=content, height=script_height)
-        st.text_area("Translated Script", value=trans, height=translate_height)
+        st.text_area("Generated Script", value=st.session_state['script_content'], height=script_height, key='script_content')
+        st.text_area("Translated Script", value=st.session_state['translate_content'], height=translate_height, key='translate_content')
         
         overlay_container.empty()
     except ValueError as e:
