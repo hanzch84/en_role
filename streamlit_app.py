@@ -173,8 +173,9 @@ cola, colb, colc = st.columns([2,3,4])
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=3)
 duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30)
-key_phrases = st.text_input("주요 표현 입력",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
-key_words = st.text_area("주요 단어 입력",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표나 엔터로 구분해서 입력하세요.")
+with st.expander:
+    key_phrases = st.text_area("주요 표현 입력",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
+    key_words = st.text_input("주요 단어 입력",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표로 구분해서 입력하세요.")
 
 col1, col2, col22, col3, col33 = st.columns([3,2,3,2,3])
 
