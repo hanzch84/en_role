@@ -37,7 +37,7 @@ st.markdown(css, unsafe_allow_html=True)
 load_dotenv()
 
 # OpenAI API 키 설정 (환경 변수에서 가져오기)
-api_key = os.getenv('OPENAI_API_KEY')
+api_key = os.getenv('OPENAI_API_KEY_P')
 
 if not api_key:
     raise ValueError("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
