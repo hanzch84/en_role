@@ -9,6 +9,15 @@ from datetime import datetime
 # CSS 스타일 정의
 css = '''
 <style>
+    
+    [data-testid="baseButton-secondary"]{
+    width: 100% !important;
+    color: orange;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #0e0e0e;
+    }
+
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
@@ -24,8 +33,12 @@ css = '''
     }
     p {
         text-align: center; /* 텍스트를 가운데 정렬 */
-        font-size: 12px;
+        font-size: 14px;
         line-height: 0.8;
+    }
+    [data-testid="baseButton-secondary"]{
+    width: 100% !important;
+    color: orange;
     }
 </style>
 '''
@@ -43,6 +56,20 @@ if not api_key:
     raise ValueError("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
 
 openai.api_key = api_key
+
+# ChatGPT API 호출 함수
+def generate_situation_with_gpt(num_people):
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+    messages=[
+        {"role": "system",
+        "content": "You are a knowledgeable theater teacher with a knack for humor and creativity."},
+        {"role": "user", "content": f"In one short sentence(in 15 words), provide a unique background and situation in Korean for {num_people} people to role play. role can be adults not only students.(ex)우주선 고장으로 조난 당한 긴박한 상황."}
+    ]
+    )
+    # Convert the response to a Python dictionary
+    response_dict = response['choices'][0]['message']['content']
+    return response_dict
 
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
@@ -166,6 +193,9 @@ def download_script(script):
         file.write(script)
     return script_file_path
 
+if 'situation' not in st.session_state:
+    st.session_state.situation = ''
+
 # Streamlit UI 구성
 st.title("영어 대본 생성기")
 st.subheader("EnRole: English Role-play Scripter")
@@ -175,7 +205,12 @@ cola, colb, colc = st.columns([2,3,4])
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=3)
 duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30)
-situations = st.text_input("간단한 상황 입력(한글 혹은 영어)",key="situations",placeholder="대략적인 상황극의 상황을 한글이나 영어로 입력해 주세요.(예)우주선의 고장으로 조난을 당함.")
+col_sit,col_rnd_btn = st.columns([10,1])
+if col_rnd_btn.button("랜덤"):
+    st.session_state.situation = generate_situation_with_gpt(num_people)
+situations = col_sit.text_input("간단한 상황 입력(한글 혹은 영어)",value=st.session_state.situation,key="situations",placeholder="대략적 상황을 한글이나 영어로 입력.(예)우주선 고장으로 조난 당함.",label_visibility="collapsed")
+
+
 with st.expander("상세 옵션"):
     key_words = st.text_input("주요 단어 입력",key="words",placeholder="cold, headache, medicine 등 연습할 단어를 쉼표로 구분해서 입력하세요.")
     key_phrases = st.text_area("주요 표현 입력",key="expressions",placeholder="What's wrong?, Get some rest 등 연습할 표현을 쉼표나 엔터로 구분해서 입력하세요.")
