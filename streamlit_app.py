@@ -9,15 +9,6 @@ from datetime import datetime
 # CSS 스타일 정의
 css = '''
 <style>
-    
-    [data-testid="baseButton-secondary"]{
-    width: 100% !important;
-    color: orange;
-    font-weight: 500;
-    font-size: 16px;
-    background-color: #0e0e0e;
-    }
-
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
@@ -39,6 +30,11 @@ css = '''
     [data-testid="baseButton-secondary"]{
     width: 100% !important;
     color: orange;
+    width: 100% !important;
+    color: orange;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #0e0e0e;
     }
 </style>
 '''
