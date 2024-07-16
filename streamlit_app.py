@@ -275,6 +275,7 @@ if col1.button("상황극 대본 생성"):
             
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
         overlay_container.empty()
+        st.balloons()
         
     except ValueError as e:
         st.error(str(e))
