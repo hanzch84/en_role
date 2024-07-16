@@ -200,7 +200,7 @@ cola, colb, colc = st.columns([2,3,4])
 
 grade = cola.selectbox("학년", ["3rd", "4th", "5th", "6th"], index=3)
 num_people = colb.slider("상황극 인원", min_value=2, max_value=10, value=3)
-duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30)
+duration = colc.slider("상황극 길이(초)", min_value=10, max_value=300, value=30,step=5)
 col_sit,col_rnd_btn = st.columns([10,1])
 if col_rnd_btn.button("랜덤"):
     st.session_state.situation = generate_situation_with_gpt(num_people)
