@@ -9,6 +9,9 @@ from datetime import datetime
 # CSS 스타일 정의
 css = '''
 <style>
+    /* stHorizontalBlock 요소 간의 간격 조절 */
+    [data-testid="stHorizontalBlock"] {
+        margin-bottom: -6px; /* 기존보다 작은 값으로 설정하여 간격 줄이기 */
     .code-wrap {
         white-space: pre-wrap; /* 줄 바꿈을 허용 */
     }
@@ -264,14 +267,14 @@ if col1.button("상황극 대본 생성"):
                 </div><div style="color: white;">대본을 만들고 번역하는 중...</div></div></div>""", unsafe_allow_html=True)
         st.session_state['script'] = generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words)
         st.session_state['translated'] = translate_gpt(st.session_state['script'])
+        st.balloons()
+        overlay_container.empty()
         content = st.session_state['script']
         trans = st.session_state['translated']    
         script_placeholder.code(content,"http")
         translate_placeholder.code(trans,"http")
             
         # 작업이 완료되면 오버레이와 스피너를 제거합니다.
-        overlay_container.empty()
-        st.balloons()
         
     except ValueError as e:
         st.error(str(e))
