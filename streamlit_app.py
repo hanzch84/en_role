@@ -73,7 +73,7 @@ def generate_situation_with_gpt(num_people):
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
-        model="gpt-4o",
+        model="gpt-4.5-preview",
     messages=[
         {"role": "system",
         "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
