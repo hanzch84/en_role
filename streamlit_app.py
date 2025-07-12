@@ -59,7 +59,7 @@ openai.api_key = api_key
 # ChatGPT API 호출 함수
 def generate_situation_with_gpt(num_people):
     response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
     messages=[
         {"role": "system",
         "content": "You are a knowledgeable theater teacher with a knack for humor and creativity."},
@@ -73,8 +73,9 @@ def generate_situation_with_gpt(num_people):
 # ChatGPT API 호출 함수
 def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words):
     response = openai.ChatCompletion.create(
-        model="gpt-4.5-preview",
-    messages=[
+        model="gpt-4.1",
+
+        messages=[
         {"role": "system",
         "content": "You are a skilled playwright specializing in role-playing scripts as a teacher. You excel at writing scripts with easy words, especially for elementary school students. You can write engaging role-play scripts using educationally appropriate words and situations that help students to use the key expressions in an interesting way."},
         {"role": "user", "content": f'''Create a role-play script for {grade} grade Korean elementary school students. The script should play for {duration} seconds (a line in the script takes 4~5 seconds). Include {num_people} balanced roles in the script. Include Key phrases: {key_phrases} and Key words: {key_words}.
@@ -111,7 +112,8 @@ def generate_script_with_gpt(grade, num_people, duration, key_phrases, key_words
 
 def translate_gpt(script):
     response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1",             # gpt-4.1으로 교체
+        temperature=0.0,             # 일관된 번역을 위해 0.0 고정
     messages=[
     {"role": "system",
     "content": "You are a skilled playwright specializing in translating role-playing scripts for elementary school students. Your expertise is in using simple, educationally appropriate language that engages young learners. You excel at translating English scripts to Korean, maintaining the original context and simplicity."},
